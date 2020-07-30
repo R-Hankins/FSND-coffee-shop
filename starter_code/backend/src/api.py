@@ -32,7 +32,7 @@ def read_drinks():
     drink_selection = Drink.query.all()
 
     drinks = [drink.short() for drink in drink_selection]
-    
+
     return jsonify({
         'success': True,
         'drinks': drinks
@@ -47,7 +47,18 @@ def read_drinks():
     returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks-detail', methods=['GET'])
+@requires_auth('get:drinks-detail')
+def read_drinks_detail(payload):
+    
+    drink_selection = Drink.query.all()
 
+    drinks = [drink.long() for drink in drink_selection]
+
+    return jsonify({
+        'success': True,
+        'drinks': drinks
+    })
 
 '''
 @TODO implement endpoint
