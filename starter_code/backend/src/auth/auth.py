@@ -31,7 +31,7 @@ class AuthError(Exception):
     return the token part of the header
 '''
 def get_token_auth_header():
-   auth = request.headers.get('Authorization', None)
+    auth = request.headers.get('Authorization', None)
     if not auth:
         raise AuthError({
             'code': 'authorization_header_missing',
@@ -145,10 +145,10 @@ def verify_decode_jwt(token):
                 'code': 'invalid_header',
                 'description': 'Unable to parse authentication token.'
             }, 400)
-        raise AuthError({
-                'code': 'invalid_header',
-                'description': 'Unable to find the appropriate key.'
-            }, 400)
+    raise AuthError({
+            'code': 'invalid_header',
+            'description': 'Unable to find the appropriate key.'
+        }, 400)
 
 '''
 @TODO implement @requires_auth(permission) decorator method
