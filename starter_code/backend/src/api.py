@@ -29,9 +29,17 @@ db_drop_and_create_all()
 '''
 @app.route('/drinks', methods=['GET'])
 def read_drinks():
-    drink_selection = Drink.query.all()
 
-    drinks = [drink.short() for drink in drink_selection]
+    try:
+        # get all drinks
+        drink_selection = Drink.query.all()
+
+        # use correct format for data representation
+        drinks = [drink.short() for drink in drink_selection]
+
+    except:
+        abort(422)
+
 
     return jsonify({
         'success': True,
