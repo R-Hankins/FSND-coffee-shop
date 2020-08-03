@@ -199,3 +199,11 @@ def internal_server_error(error):
 @TODO implement error handler for AuthError
     error handler should conform to general task above 
 '''
+@app.errorhandler(AuthError)
+def autherror(e):
+    return jsonify({
+        "success": False,
+        "error": e.status_code,
+        "message": e.error['code'],
+        "description": e.error['description']
+    }), e.status_code
