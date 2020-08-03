@@ -68,7 +68,7 @@ def read_drinks_detail(payload):
     
     except:
         abort(422)
-        
+
     return jsonify({
         'success': True,
         'drinks': drinks
@@ -86,12 +86,19 @@ def read_drinks_detail(payload):
 @app.route('/drinks', methods = ['POST'])
 @requires_auth('post:drinks')
 def create_drink(payload):
-    body = request.get_json()
-    title = body['title']
-    recipe = body['recipe']
 
-    drink = Drink(title=title, recipe=json.dumps([recipe]))
-    drink.insert()
+    try:
+        # get body from request
+        body = request.get_json()
+        title = body['title']
+        recipe = body['recipe']
+
+        # create new drink
+        drink = Drink(title=title, recipe=json.dumps([recipe]))
+        drink.insert()
+    
+    except:
+        abort(422)
 
     return jsonify({
         'success': True,
