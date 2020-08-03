@@ -171,6 +171,11 @@ def unprocessable(error):
                     "message": "resource not found"
                     }), 404
 
+''' 
+
+'''
+@TODO implement error handler for 404
+    error handler should conform to general task above 
 '''
 @app.errorhandler(404)
 def not_found(error):
@@ -178,13 +183,17 @@ def not_found(error):
         "success": False, 
         "error": 404,
         "message": "resource not found"
-        }), 404 
+        }), 404
 
-'''
-@TODO implement error handler for 404
-    error handler should conform to general task above 
-'''
 
+# error handler for 500
+@app.errorhandler(500)
+def internal_server_error(error):
+    return jsonify({
+        "success": False,
+        "error": 500,
+        "message": "internal server error"
+    }), 500
 
 '''
 @TODO implement error handler for AuthError
