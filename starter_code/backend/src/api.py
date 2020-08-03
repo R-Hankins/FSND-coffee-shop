@@ -59,10 +59,16 @@ def read_drinks():
 @requires_auth('get:drinks-detail')
 def read_drinks_detail(payload):
     
-    drink_selection = Drink.query.all()
+    try:
+        # get all drinks
+        drink_selection = Drink.query.all()
 
-    drinks = [drink.long() for drink in drink_selection]
-
+        # use correct format for data representation
+        drinks = [drink.long() for drink in drink_selection]
+    
+    except:
+        abort(422)
+        
     return jsonify({
         'success': True,
         'drinks': drinks
