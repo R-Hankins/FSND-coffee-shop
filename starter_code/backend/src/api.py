@@ -176,17 +176,34 @@ def update_drink(payload, id):
 @requires_auth('delete:drinks')
 def delete_drink(payload, id):
 
-    drink = Drink.query.filter(Drink.id==id).one_or_none()
+    # error bools
+    error_404 = False
+    error_422 = False
 
-    if drink is None:
+    try:
+        # get drink specified by id
+        drink = Drink.query.filter(Drink.id==id).one_or_none()
+
+        # abort if drink not found
+        if drink is None:
+            error_404 = True
+        
+        # delete drink
+        drink.delete()
+
+    except:
+        error_422 = True
+
+    # check for errors
+    if error_404:
         abort(404)
-    
-    drink.delete()
-
-    return jsonify({
-        'success': True,
-        'delete': id
-    })
+    elif error_422:
+        abort(422)
+    else:
+        return jsonify({
+            'success': True,
+            'delete': id
+        })
 
 
 ## Error Handling
