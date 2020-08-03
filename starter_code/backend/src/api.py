@@ -123,25 +123,43 @@ def create_drink(payload):
 @requires_auth('patch:drinks')
 def update_drink(payload, id):
 
-    body = request.get_json()
-    
-    drink = Drink.query.filter(Drink.id==id).one_or_none()
+    # error bools
+    error_404 = False
+    error_422 = False
 
-    if drink is None:
+    try:
+        # get body from request
+        body = request.get_json()
+    
+        # get drink specified by id
+        drink = Drink.query.filter(Drink.id==id).one_or_none()
+
+        # abort if drink not found
+        if drink is None:
+            error_404 = True
+
+        # update drink attributes
+        if 'title' in body:
+            drink.title = body['title']
+        
+        if 'recipe' in body:
+            drink.recipe = json.dumps([body['recipe']])
+
+        drink.update()
+
+    except:
+        error_422 = True
+
+    # check for errors
+    if error_404:
         abort(404)
-
-    if 'title' in body:
-        drink.title = body['title']
-    
-    if 'recipe' in body:
-        drink.recipe = json.dumps([body['recipe']])
-
-    drink.update()
-
-    return jsonify({
-        'success': True,
-        'drinks': [drink.long()]
-    })
+    elif error_422:
+        abort(422)
+    else:
+        return jsonify({
+            'success': True,
+            'drinks': [drink.long()]
+        })
 
 
 '''
