@@ -94,7 +94,7 @@ def create_drink(payload):
         recipe = body['recipe']
 
         # create new drink
-        drink = Drink(title=title, recipe=json.dumps([recipe]))
+        drink = Drink(title=title, recipe=json.dumps(recipe))
         drink.insert()
     
     except:
@@ -143,7 +143,7 @@ def update_drink(payload, id):
             drink.title = body['title']
         
         if 'recipe' in body:
-            drink.recipe = json.dumps([body['recipe']])
+            drink.recipe = json.dumps(body['recipe'])
 
         drink.update()
 
